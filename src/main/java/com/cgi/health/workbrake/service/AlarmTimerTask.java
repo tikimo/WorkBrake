@@ -4,6 +4,7 @@ import com.cgi.health.workbrake.App;
 import com.cgi.health.workbrake.ui.ShowSystemNotification;
 
 import java.awt.TrayIcon.MessageType;
+import java.io.IOException;
 import java.util.TimerTask;
 import java.util.logging.Logger;
 
@@ -34,6 +35,19 @@ public class AlarmTimerTask extends TimerTask {
         }
 
         notifier.showNotification(header, "Locking you out...", MessageType.INFO);
+
+        try {
+            Thread.sleep(1000*5);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        try {
+            Runtime.getRuntime().exec("C:\\Windows\\System32\\rundll32.exe user32.dll,LockWorkStation");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
 
     }
 }

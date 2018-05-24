@@ -18,7 +18,7 @@ public class AlarmService implements Runnable {
         logger.fine("Starting scheduled executor service...");
 
         Timer timer = new Timer();
-        timer.schedule(new AlarmTimerTask(), 1000*60*45);
+        timer.schedule(new AlarmTimerTask(), 1000*60*60);   // Start task every hour
 
     }
 }

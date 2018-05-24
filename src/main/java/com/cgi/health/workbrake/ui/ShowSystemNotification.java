@@ -31,7 +31,7 @@ public class ShowSystemNotification {
         SystemTray systemTray = SystemTray.getSystemTray();
 
         // If the icon is a resource
-        Image image = Toolkit.getDefaultToolkit().createImage(getClass().getResource("trayIcon.png"));
+        Image image = Toolkit.getDefaultToolkit().getImage(getClass().getClassLoader().getResource("trayIcon.png"));
 
         TrayIcon trayIcon = new TrayIcon(image, "Work Brake");
         trayIcon.setImageAutoSize(true);
