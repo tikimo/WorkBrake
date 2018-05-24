@@ -12,7 +12,7 @@ public class AlarmTimerTask extends TimerTask {
     Logger logger = Logger.getLogger(App.class.getName());
     ShowSystemNotification notifier = new ShowSystemNotification();
 
-    String header = "Work Brake";
+    private String header = "Work Brake";
 
     @Override
     public void run() {
@@ -29,7 +29,7 @@ public class AlarmTimerTask extends TimerTask {
         notifier.showNotification(header, "Brake is taking place in 1 minute!", MessageType.WARNING);
 
         try {
-            Thread.sleep(1000*55); // 55 seconds
+            Thread.sleep(1000*60); // 1 minute
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -37,7 +37,7 @@ public class AlarmTimerTask extends TimerTask {
         notifier.showNotification(header, "Locking you out...", MessageType.INFO);
 
         try {
-            Thread.sleep(1000*5);
+            Thread.sleep(1000*60*5);    // break for 5 minutes
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
