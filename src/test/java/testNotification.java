@@ -14,8 +14,9 @@ public class testNotification {
 
         // Runtime.getRuntime().exec("C:\\Windows\\System32\\rundll32.exe user32.dll,LockWorkStation");
 
-        Thread.sleep(7000);
-        System.exit(0);
+        Thread.sleep(14000);
+        // System.exit(0);
+        systemNotification.showNotification("Test", "another one", TrayIcon.MessageType.INFO);
 
     }
 }
