@@ -2,9 +2,11 @@ package com.cgi.health.workbrake.service;
 
 import com.cgi.health.workbrake.App;
 
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Timer;
 import java.util.logging.Logger;
 
 public class AlarmService implements Runnable {
@@ -15,13 +17,8 @@ public class AlarmService implements Runnable {
         logger.fine("Started alarm service.");
         logger.fine("Starting scheduled executor service...");
 
-        // Run scheduled executor service
-        ScheduledExecutorService service = Executors.newSingleThreadScheduledExecutor();
-
-        service.scheduleAtFixedRate(() -> {
-            System.out.println("We reached scheduled executor");
-        }, 0, 45, TimeUnit.MINUTES);
-
+        Timer timer = new Timer();
+        timer.schedule(new AlarmTimerTask(), 1000*60*45);
 
     }
 }
