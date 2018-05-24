@@ -9,7 +9,7 @@ public class App {
 
     public static void main(String[] args) {
 
-        logger.fine("Starting alarm service... ");
+        logger.info("Starting alarm service... ");
         AlarmService alarmService = new AlarmService();
         alarmService.run();
 

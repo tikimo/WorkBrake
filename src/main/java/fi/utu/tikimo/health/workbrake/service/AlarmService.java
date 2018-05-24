@@ -10,8 +10,8 @@ public class AlarmService implements Runnable {
 
     @Override
     public void run() {
-        logger.fine("Started alarm service.");
-        logger.fine("Starting scheduled executor service...");
+        logger.info("Started alarm service.");
+        logger.info("Starting scheduled executor service...");
 
         Timer timer = new Timer();
         timer.schedule(new AlarmTimerTask(), 1000*60*60);   // Start task every hour

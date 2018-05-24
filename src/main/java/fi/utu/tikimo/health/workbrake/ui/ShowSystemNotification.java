@@ -19,7 +19,7 @@ public class ShowSystemNotification {
     public ShowSystemNotification() {
         String osName = System.getProperty("os.name").toLowerCase();
         if (osName.contains("windows") && osName.contains("10")) {
-            logger.fine("This os is supported. Proceeding.");
+            logger.info("This os is supported. Proceeding.");
             supportedOS = true;
         } else {
             logger.severe("This os is not supported yet. Exiting app");

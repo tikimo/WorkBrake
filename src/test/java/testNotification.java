@@ -5,7 +5,7 @@ import java.io.IOException;
 
 public class testNotification {
 
-    public static void main(String[] a) throws IOException {
+    public static void main(String[] a) throws IOException, InterruptedException {
         ShowSystemNotification systemNotification = new ShowSystemNotification();
 
         systemNotification.showNotification("Moikka", "Riku on äiä", TrayIcon.MessageType.INFO);
@@ -13,6 +13,9 @@ public class testNotification {
         systemNotification.playNotificationSound();
 
         // Runtime.getRuntime().exec("C:\\Windows\\System32\\rundll32.exe user32.dll,LockWorkStation");
+
+        Thread.sleep(7000);
+        System.exit(0);
 
     }
 }
