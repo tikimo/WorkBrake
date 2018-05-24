@@ -17,7 +17,7 @@ public class AlarmTimerTask extends TimerTask {
     @Override
     public void run() {
         // Notify at 45min that brake is soon
-        notifier.showNotification(header, "We're having a brake in 10 mins", MessageType.INFO);
+        notifier.showNotification(header, "We're having a 5 minute brake in 10 mins", MessageType.INFO);
 
         // Sleep for 9 minutes
         try {
@@ -26,7 +26,7 @@ public class AlarmTimerTask extends TimerTask {
             e.printStackTrace();
         }
 
-        notifier.showNotification(header, "Brake is taking place in 1 minute!", MessageType.WARNING);
+        notifier.showNotification(header, "5 min brake is taking place in 1 minute!", MessageType.WARNING);
 
         try {
             Thread.sleep(1000*60); // 1 minute
@@ -34,7 +34,7 @@ public class AlarmTimerTask extends TimerTask {
             e.printStackTrace();
         }
 
-        notifier.showNotification(header, "Locking you out...", MessageType.INFO);
+        notifier.showNotification(header, "Locking you out ...", MessageType.INFO);
 
         try {
             Thread.sleep(1000*60*5);    // break for 5 minutes
