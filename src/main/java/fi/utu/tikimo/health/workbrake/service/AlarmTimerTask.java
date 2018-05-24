@@ -10,7 +10,7 @@ import java.util.logging.Logger;
 
 public class AlarmTimerTask extends TimerTask {
     Logger logger = Logger.getLogger(App.class.getName());
-    ShowSystemNotification notifier = new ShowSystemNotification();
+    private ShowSystemNotification notifier = new ShowSystemNotification();
 
     private String header = "Work Brake";
 
@@ -23,7 +23,7 @@ public class AlarmTimerTask extends TimerTask {
         try {
             Thread.sleep(1000*60*9);    // 9 minutes
         } catch (InterruptedException e) {
-            e.printStackTrace();
+            logger.warning(e.getMessage());
         }
 
         notifier.showNotification(header, "5 min brake is taking place in 1 minute!", MessageType.WARNING);
@@ -31,7 +31,7 @@ public class AlarmTimerTask extends TimerTask {
         try {
             Thread.sleep(1000*60); // 1 minute
         } catch (InterruptedException e) {
-            e.printStackTrace();
+            logger.warning(e.getMessage());
         }
 
         notifier.showNotification(header, "Locking you out ...", MessageType.INFO);
@@ -39,13 +39,13 @@ public class AlarmTimerTask extends TimerTask {
         try {
             Thread.sleep(1000*60*5);    // break for 5 minutes
         } catch (InterruptedException e) {
-            e.printStackTrace();
+            logger.warning(e.getMessage());
         }
 
         try {
             Runtime.getRuntime().exec("C:\\Windows\\System32\\rundll32.exe user32.dll,LockWorkStation");
         } catch (IOException e) {
-            e.printStackTrace();
+            logger.warning(e.getMessage());
         }
 
 
