@@ -1,11 +1,7 @@
-package com.cgi.health.workbrake.service;
+package fi.utu.tikimo.health.workbrake.service;
 
-import com.cgi.health.workbrake.App;
+import fi.utu.tikimo.health.workbrake.App;
 
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.Timer;
 import java.util.logging.Logger;
 

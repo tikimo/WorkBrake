@@ -1,7 +1,7 @@
-package com.cgi.health.workbrake.service;
+package fi.utu.tikimo.health.workbrake.service;
 
-import com.cgi.health.workbrake.App;
-import com.cgi.health.workbrake.ui.ShowSystemNotification;
+import fi.utu.tikimo.health.workbrake.App;
+import fi.utu.tikimo.health.workbrake.ui.ShowSystemNotification;
 
 import java.awt.TrayIcon.MessageType;
 import java.io.IOException;

@@ -1,6 +1,6 @@
-package com.cgi.health.workbrake;
+package fi.utu.tikimo.health.workbrake;
 
-import com.cgi.health.workbrake.service.AlarmService;
+import fi.utu.tikimo.health.workbrake.service.AlarmService;
 
 import java.util.logging.Logger;
 

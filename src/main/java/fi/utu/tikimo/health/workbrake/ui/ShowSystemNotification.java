@@ -1,8 +1,15 @@
-package com.cgi.health.workbrake.ui;
+package fi.utu.tikimo.health.workbrake.ui;
 
-import com.cgi.health.workbrake.App;
+import fi.utu.tikimo.health.workbrake.App;
 
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
 import java.awt.*;
+import java.io.File;
+import java.io.IOException;
+import java.util.Objects;
 import java.util.logging.Logger;
 
 public class ShowSystemNotification {
@@ -23,7 +30,22 @@ public class ShowSystemNotification {
     public void showNotification(String header, String message, TrayIcon.MessageType severity) {
         if (supportedOS && SystemTray.isSupported()) {
             displayTray(header, message, severity);
+            playNotificationSound();
         }
+    }
+
+    public void playNotificationSound() {
+        File soundFile = new File(
+                Objects.requireNonNull(getClass().getClassLoader().getResource("notification.wav")).getFile());
+        try {
+            Clip sound = AudioSystem.getClip();
+            sound.open(AudioSystem.getAudioInputStream(soundFile));
+            sound.start();
+        } catch (LineUnavailableException | UnsupportedAudioFileException | IOException e) {
+            e.printStackTrace();
+        }
+
+
     }
 
     private void displayTray(String header, String message, TrayIcon.MessageType severity) {

@@ -1,4 +1,4 @@
-package com.cgi.health.workbrake.data.local.model;
+package fi.utu.tikimo.health.workbrake.data.local.model;
 
 import java.time.LocalTime;
 
