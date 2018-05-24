@@ -68,7 +68,7 @@
                         <configuration>
                             <headerType>console</headerType>
                             <outfile>target/WorkBrake.exe</outfile>
-                            <jar>target/Work-Brake-1.0-SNAPSHOT-jar-with-dependencies.jar</jar>
+                            <jar>target/Work-Brake-1.0-SNAPSHOT-shaded.jar</jar>
                             <errTitle>WorkBrake</errTitle>
                             <classPath>
                                 <mainClass>fi.utu.tikimo.health.workbrake.App</mainClass>
