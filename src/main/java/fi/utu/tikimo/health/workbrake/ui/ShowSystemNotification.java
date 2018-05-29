@@ -86,6 +86,18 @@ public class ShowSystemNotification {
 
     private ArrayList<MenuItem> getMenuItems() {
         return new ArrayList<MenuItem>(){{
+            add(new MenuItem("Go on lunchbreak") {{
+                // functionality here
+                addActionListener(e -> {
+                    logger.info("Program paused for 45 minute lunch break.");
+                    showNotification("Work Break", "Program paused for 45 min lunch break.", TrayIcon.MessageType.INFO);
+                    try { // Sleep the thread for 45 mins
+                        Thread.sleep(1000*60*45);
+                    } catch (InterruptedException e1) {
+                        logger.severe(e1.getMessage());
+                    }
+                });
+            }});
             add(new MenuItem("Postpone initiated break"){{
                 // insert item functionality here
                 addActionListener(e -> {
