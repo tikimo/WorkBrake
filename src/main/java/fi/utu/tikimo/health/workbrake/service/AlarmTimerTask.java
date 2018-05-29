@@ -10,7 +10,12 @@ import java.util.logging.Logger;
 
 public class AlarmTimerTask extends TimerTask {
     Logger logger = Logger.getLogger(App.class.getName());
-    private ShowSystemNotification notifier = new ShowSystemNotification();
+
+    public void setNotifier(ShowSystemNotification notifier) {
+        this.notifier = notifier;
+    }
+
+    private ShowSystemNotification notifier;
 
     private String header = "Work Brake";
 
