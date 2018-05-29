@@ -1,6 +1,7 @@
 package fi.utu.tikimo.health.workbrake.ui;
 
 import fi.utu.tikimo.health.workbrake.App;
+import fi.utu.tikimo.health.workbrake.data.local.model.PopupMenuException;
 
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
@@ -16,31 +17,58 @@ import java.util.logging.Logger;
 public class ShowSystemNotification {
     private final Logger logger = Logger.getLogger(App.class.getName());
     private SystemTray systemTray = SystemTray.getSystemTray();
-    private boolean nextAlarmActive = true;
     private boolean supportedOS = false;
     private TrayIcon trayIcon;
+    private boolean nextSuppressed;
+    private PopupMenu popupMenu;
 
     public ShowSystemNotification() {
         String osName = System.getProperty("os.name").toLowerCase();
         if (osName.contains("windows") && osName.contains("10")) {
             logger.info("This os is supported. Proceeding.");
             supportedOS = true;
-            initTrayIcon();
         } else {
             logger.severe("This os is not supported yet. Exiting app");
             System.exit(-1);
         }
     }
 
+    public void initTrayIcon() {
+        try {
+            // Require that there are items in popup menu, at least the Exit function
+            if (popupMenu == null || popupMenu.getItemCount() == 0) {
+                throw new PopupMenuException("No items in popup menu. Call setPopupMenu(ArrayList<MenuItem>) before initialization.");
+            }
+            // If the icon is a resource
+            trayIcon = new TrayIcon(
+                    Toolkit.getDefaultToolkit().getImage(getClass().getClassLoader().getResource("trayIcon.png")),
+                    "Work Brake",
+                    popupMenu);
+            trayIcon.setImageAutoSize(true);
+            trayIcon.setToolTip("Work brake (c) Tijam Moradi");
+
+            try {
+                systemTray.add(trayIcon);
+            } catch (AWTException e) {
+                logger.severe(e.getLocalizedMessage());
+                e.printStackTrace();
+            }
+
+        } catch (PopupMenuException pme) {
+            logger.warning(pme.getMessage());
+        }
+
+
+    }
+
     public void showNotification(String header, String message, TrayIcon.MessageType severity) {
-        if (supportedOS && SystemTray.isSupported() && nextAlarmActive) {
-            displayTray(header, message, severity);
+        if (supportedOS && SystemTray.isSupported()) {
+            logger.info("Displaying tray info notification");
+            // Obtain only one instance of SystemTray object
+            trayIcon.displayMessage(header, message, severity);
+
             logger.info("Playing notification sound");
             playNotificationSound();
-
-        } else {
-            nextAlarmActive = true;
-            logger.info("This alarm was suppressed.");
         }
     }
 
@@ -58,68 +86,21 @@ public class ShowSystemNotification {
 
     }
 
-    private void initTrayIcon() {
-        PopupMenu popupMenu = new PopupMenu();
-        ArrayList<MenuItem> menuItems = getMenuItems();
+    public boolean getNextSuppressed() {
+        return nextSuppressed;
+    }
 
-        for (MenuItem menuItem : menuItems) {
+    public void setNextSuppressed(boolean nextSuppressed) {
+        this.nextSuppressed = nextSuppressed;
+    }
+
+    public void setPopupMenu(ArrayList<MenuItem> defaultMenu) {
+        popupMenu = new PopupMenu();
+        for (MenuItem menuItem : defaultMenu) {
             popupMenu.add(menuItem);
+            System.out.println("Added menu item: " + menuItem.getLabel());
         }
-
-        // If the icon is a resource
-        trayIcon = new TrayIcon(
-                Toolkit.getDefaultToolkit().getImage(getClass().getClassLoader().getResource("trayIcon.png")),
-                "Work Brake",
-                popupMenu);
-        trayIcon.setImageAutoSize(true);
-        trayIcon.setToolTip("Work brake tooltip");
-
-
-        try {
-            systemTray.add(trayIcon);
-        } catch (AWTException e) {
-            logger.severe(e.getLocalizedMessage());
-            e.printStackTrace();
-        }
-
-    }
-
-    private ArrayList<MenuItem> getMenuItems() {
-        return new ArrayList<MenuItem>(){{
-            add(new MenuItem("Go on lunchbreak") {{
-                // functionality here
-                addActionListener(e -> {
-                    logger.info("Program paused for 45 minute lunch break.");
-                    showNotification("Work Break", "Program paused for 45 min lunch break.", TrayIcon.MessageType.INFO);
-                    try { // Sleep the thread for 45 mins
-                        Thread.sleep(1000*60*45);
-                    } catch (InterruptedException e1) {
-                        logger.severe(e1.getMessage());
-                    }
-                });
-            }});
-            add(new MenuItem("Postpone initiated break"){{
-                // insert item functionality here
-                addActionListener(e -> {
-                    logger.info("Disabled next alarm");
-                    showNotification("Work Break", "Upcoming break will be suppressed", TrayIcon.MessageType.INFO);
-                    nextAlarmActive = false;
-                });
-            }});
-            add(new MenuItem("Exit") {{
-                // insert item functionality here
-                addActionListener(e -> {
-                    logger.info("Exiting system...");
-                    System.exit(0);
-                });
-            }});
-        }};
-    }
-
-    private void displayTray(String header, String message, TrayIcon.MessageType severity) {
-        logger.info("Displaying tray info notification");
-        // Obtain only one instance of SystemTray object
-        trayIcon.displayMessage(header, message, severity);
+        logger.fine("All menu items added");
     }
 
 }

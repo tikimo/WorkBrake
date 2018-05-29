@@ -1,6 +1,7 @@
 package fi.utu.tikimo.health.workbrake.service;
 
 import fi.utu.tikimo.health.workbrake.App;
+import fi.utu.tikimo.health.workbrake.data.local.PopupMenuFactory;
 import fi.utu.tikimo.health.workbrake.ui.ShowSystemNotification;
 
 import java.awt.*;
@@ -18,6 +19,12 @@ public class AlarmService implements Runnable {
         Timer timer = new Timer();
         AlarmTimerTask alarmTimerTask = new AlarmTimerTask();
         ShowSystemNotification notifier = new ShowSystemNotification();
+
+        PopupMenuFactory popupMenuFactory = new PopupMenuFactory(Thread.currentThread());
+        notifier.setPopupMenu(popupMenuFactory.getDefaultMenu());
+        notifier.initTrayIcon();
+
+        popupMenuFactory.setNotifier(notifier);
 
         notifier.showNotification("WorkBrake", "Alarm service started. First brake in 55 minutes.", TrayIcon.MessageType.INFO);
 

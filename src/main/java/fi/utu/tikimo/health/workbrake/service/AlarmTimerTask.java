@@ -21,6 +21,18 @@ public class AlarmTimerTask extends TimerTask {
 
     @Override
     public void run() {
+        if (notifier.getNextSuppressed()) {
+            logger.info("This alarm was suppressed.");
+
+        } else {
+            notifier.setNextSuppressed(false);
+            executeNotifier();
+        }
+
+
+    }
+
+    private void executeNotifier() {
         // Notify at 45min that brake is soon
         notifier.showNotification(header, "We're having a 5 minute brake in 10 mins", MessageType.INFO);
 
@@ -54,6 +66,5 @@ public class AlarmTimerTask extends TimerTask {
         }
 
         notifier.showNotification(header, "You can resume your work now :)", MessageType.INFO);
-
     }
 }
