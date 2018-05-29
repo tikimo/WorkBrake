@@ -10,8 +10,13 @@ import java.util.logging.Logger;
 
 public class AlarmTimerTask extends TimerTask {
     Logger logger = Logger.getLogger(App.class.getName());
+    private static boolean nextSuppressed = false;
 
-    public void setNotifier(ShowSystemNotification notifier) {
+    public static void setNextSuppressed(boolean ns) {
+        nextSuppressed = ns;
+    }
+
+    void setNotifier(ShowSystemNotification notifier) {
         this.notifier = notifier;
     }
 
@@ -21,15 +26,15 @@ public class AlarmTimerTask extends TimerTask {
 
     @Override
     public void run() {
-        if (notifier.getNextSuppressed()) {
+        if (nextSuppressed) {
             logger.info("This alarm was suppressed.");
-
+            nextSuppressed = false;
         } else {
-            notifier.setNextSuppressed(false);
-            executeNotifier();
+            while (!nextSuppressed) {
+                System.out.println("This alarm was not suppressed.");
+                executeNotifier();
+            }
         }
-
-
     }
 
     private void executeNotifier() {
@@ -67,4 +72,5 @@ public class AlarmTimerTask extends TimerTask {
 
         notifier.showNotification(header, "You can resume your work now :)", MessageType.INFO);
     }
+
 }

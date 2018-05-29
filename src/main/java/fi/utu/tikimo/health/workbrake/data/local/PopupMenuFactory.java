@@ -1,6 +1,7 @@
 package fi.utu.tikimo.health.workbrake.data.local;
 
 import fi.utu.tikimo.health.workbrake.App;
+import fi.utu.tikimo.health.workbrake.service.AlarmTimerTask;
 import fi.utu.tikimo.health.workbrake.ui.ShowSystemNotification;
 
 import java.awt.*;
@@ -33,11 +34,7 @@ public class PopupMenuFactory {
                 addActionListener(e -> {
                     logger.info("Program paused for 45 minute lunch break.");
                     notifier.showNotification("Work Break", "Program paused for 45 min lunch break.", TrayIcon.MessageType.INFO);
-                    try {
-                        parentThread.sleep(1000*60*45);
-                    } catch (InterruptedException e1) {
-                        logger.severe(e1.getMessage());
-                    }
+                    AlarmTimerTask.setNextSuppressed(true);
                 });
             }});
             add(new MenuItem("Postpone initiated break"){{
@@ -45,6 +42,7 @@ public class PopupMenuFactory {
                 addActionListener(e -> {
                     logger.info("Disabled next alarm");
                     notifier.showNotification("Work Break", "Upcoming break will be suppressed", TrayIcon.MessageType.INFO);
+                    AlarmTimerTask.setNextSuppressed(true);
                 });
             }});
             add(new MenuItem("Exit") {{

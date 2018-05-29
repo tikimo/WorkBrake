@@ -19,7 +19,6 @@ public class ShowSystemNotification {
     private SystemTray systemTray = SystemTray.getSystemTray();
     private boolean supportedOS = false;
     private TrayIcon trayIcon;
-    private boolean nextSuppressed;
     private PopupMenu popupMenu;
 
     public ShowSystemNotification() {
@@ -84,14 +83,6 @@ public class ShowSystemNotification {
         }
 
 
-    }
-
-    public boolean getNextSuppressed() {
-        return nextSuppressed;
-    }
-
-    public void setNextSuppressed(boolean nextSuppressed) {
-        this.nextSuppressed = nextSuppressed;
     }
 
     public void setPopupMenu(ArrayList<MenuItem> defaultMenu) {
