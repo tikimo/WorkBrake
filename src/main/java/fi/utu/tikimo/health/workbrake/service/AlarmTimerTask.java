@@ -42,17 +42,18 @@ public class AlarmTimerTask extends TimerTask {
         notifier.showNotification(header, "Locking you out ...", MessageType.INFO);
 
         try {
-            Thread.sleep(1000*60*5);    // break for 5 minutes
-        } catch (InterruptedException e) {
-            logger.warning(e.getMessage());
-        }
-
-        try {
             Runtime.getRuntime().exec("C:\\Windows\\System32\\rundll32.exe user32.dll,LockWorkStation");
         } catch (IOException e) {
             logger.warning(e.getMessage());
         }
 
+        try {
+            Thread.sleep(1000*60*5);    // break for 5 minutes
+        } catch (InterruptedException e) {
+            logger.warning(e.getMessage());
+        }
+
+        notifier.showNotification(header, "You can resume your work now :)", MessageType.INFO);
 
     }
 }
