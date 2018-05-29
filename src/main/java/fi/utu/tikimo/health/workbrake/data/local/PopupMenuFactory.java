@@ -10,20 +10,21 @@ import java.util.logging.Logger;
 
 public class PopupMenuFactory {
     private final Logger logger = Logger.getLogger(App.class.getName());
+    private final AlarmTimerTask alarmTimerTask;
 
     public void setNotifier(ShowSystemNotification notifier) {
         this.notifier = notifier;
     }
 
     private ShowSystemNotification notifier = new ShowSystemNotification();
-    private final Thread parentThread;
+
     /**
      *
-     * @param thread Thread to attach menus to
+     * @param alarmTimerTask
      */
-    public PopupMenuFactory(Thread thread) {
+    public PopupMenuFactory(AlarmTimerTask alarmTimerTask) {
         logger.info("Reached popup menu constructor");
-        parentThread = thread;
+        this.alarmTimerTask = alarmTimerTask;
     }
 
     public ArrayList<MenuItem> getDefaultMenu() {
@@ -34,7 +35,7 @@ public class PopupMenuFactory {
                 addActionListener(e -> {
                     logger.info("Program paused for 45 minute lunch break.");
                     notifier.showNotification("Work Break", "Program paused for 45 min lunch break.", TrayIcon.MessageType.INFO);
-                    AlarmTimerTask.setNextSuppressed(true);
+                    alarmTimerTask.restartExecutionThread(true);
                 });
             }});
             add(new MenuItem("Postpone initiated break"){{
@@ -42,7 +43,7 @@ public class PopupMenuFactory {
                 addActionListener(e -> {
                     logger.info("Disabled next alarm");
                     notifier.showNotification("Work Break", "Upcoming break will be suppressed", TrayIcon.MessageType.INFO);
-                    AlarmTimerTask.setNextSuppressed(true);
+                    alarmTimerTask.restartExecutionThread(true);
                 });
             }});
             add(new MenuItem("Exit") {{

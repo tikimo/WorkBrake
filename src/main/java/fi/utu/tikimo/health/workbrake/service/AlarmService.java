@@ -22,7 +22,7 @@ public class AlarmService implements Runnable {
         AlarmTimerTask alarmTimerTask = new AlarmTimerTask();
         ShowSystemNotification notifier = new ShowSystemNotification();
 
-        PopupMenuFactory popupMenuFactory = new PopupMenuFactory(Thread.currentThread());
+        PopupMenuFactory popupMenuFactory = new PopupMenuFactory(alarmTimerTask);
         notifier.setPopupMenu(popupMenuFactory.getDefaultMenu());
         notifier.initTrayIcon();
 
@@ -31,7 +31,7 @@ public class AlarmService implements Runnable {
         notifier.showNotification("WorkBrake", "Alarm service started. First brake in 55 minutes.", TrayIcon.MessageType.INFO);
 
         alarmTimerTask.setNotifier(notifier);
-        timer.schedule(alarmTimerTask,1000*10, 1000*10);   // Start task every hour
+        timer.schedule(alarmTimerTask,0, 1000*5);   // Start task every hour
     }
 
 }

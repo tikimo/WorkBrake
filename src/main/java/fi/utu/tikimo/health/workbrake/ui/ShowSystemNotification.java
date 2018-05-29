@@ -62,11 +62,11 @@ public class ShowSystemNotification {
 
     public void showNotification(String header, String message, TrayIcon.MessageType severity) {
         if (supportedOS && SystemTray.isSupported()) {
-            logger.info("Displaying tray info notification");
+            logger.fine("Displaying tray info notification");
             // Obtain only one instance of SystemTray object
             trayIcon.displayMessage(header, message, severity);
 
-            logger.info("Playing notification sound");
+            logger.fine("Playing notification sound");
             playNotificationSound();
         }
     }

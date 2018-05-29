@@ -10,10 +10,11 @@ import java.util.logging.Logger;
 
 public class AlarmTimerTask extends TimerTask {
     Logger logger = Logger.getLogger(App.class.getName());
-    private static boolean nextSuppressed = false;
+    private Thread executionThread = executeNotifier();
 
-    public static void setNextSuppressed(boolean ns) {
-        nextSuppressed = ns;
+    public void restartExecutionThread(boolean ns) {
+        executionThread.interrupt();
+        System.out.println("Execution thread interrupted");
     }
 
     void setNotifier(ShowSystemNotification notifier) {
@@ -26,51 +27,41 @@ public class AlarmTimerTask extends TimerTask {
 
     @Override
     public void run() {
-        if (nextSuppressed) {
-            logger.info("This alarm was suppressed.");
-            nextSuppressed = false;
-        } else {
-            while (!nextSuppressed) {
-                System.out.println("This alarm was not suppressed.");
-                executeNotifier();
-            }
-        }
+        System.out.println("Thread started!!!!!!!!");
+        executionThread.run();
     }
 
-    private void executeNotifier() {
-        // Notify at 45min that brake is soon
-        notifier.showNotification(header, "We're having a 5 minute brake in 10 mins", MessageType.INFO);
+    private Thread executeNotifier() {
+        return new Thread(() -> {
+            try {
+                // Notify at 45min that brake is soon
+                notifier.showNotification(header, "We're having a 5 minute brake in 10 mins", MessageType.INFO);
 
-        // Sleep for 9 minutes
-        try {
-            Thread.sleep(1000*60*9);    // 9 minutes
-        } catch (InterruptedException e) {
-            logger.warning(e.getMessage());
-        }
+                // Sleep for 9 minutes
+                Thread.sleep(1000 * 60 * 9);    // 9 minutes
 
-        notifier.showNotification(header, "5 min brake is taking place in 1 minute!", MessageType.WARNING);
 
-        try {
-            Thread.sleep(1000*60); // 1 minute
-        } catch (InterruptedException e) {
-            logger.warning(e.getMessage());
-        }
+                notifier.showNotification(header, "5 min brake is taking place in 1 minute!", MessageType.WARNING);
+                System.out.println(Thread.currentThread().isInterrupted());
 
-        notifier.showNotification(header, "Locking you out ...", MessageType.INFO);
+                Thread.sleep(1000 * 60); // 1 minute
 
-        try {
-            Runtime.getRuntime().exec("C:\\Windows\\System32\\rundll32.exe user32.dll,LockWorkStation");
-        } catch (IOException e) {
-            logger.warning(e.getMessage());
-        }
+                notifier.showNotification(header, "Locking you out ...", MessageType.INFO);
 
-        try {
-            Thread.sleep(1000*60*5);    // break for 5 minutes
-        } catch (InterruptedException e) {
-            logger.warning(e.getMessage());
-        }
+                try {
+                    Runtime.getRuntime().exec("C:\\Windows\\System32\\rundll32.exe user32.dll,LockWorkStation");
+                } catch (IOException e) {
+                    logger.warning(e.getMessage());
+                }
 
-        notifier.showNotification(header, "You can resume your work now :)", MessageType.INFO);
+                Thread.sleep(1000 * 60 * 5);    // break for 5 minutes
+
+                notifier.showNotification(header, "You can resume your work now :)", MessageType.INFO);
+            } catch (InterruptedException ie) {
+                System.out.println("We've been interrupted.");
+                return;
+            }
+        });
     }
 
 }
