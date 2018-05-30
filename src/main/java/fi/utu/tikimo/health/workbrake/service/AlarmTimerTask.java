@@ -27,7 +27,7 @@ public class AlarmTimerTask extends TimerTask {
 
     @Override
     public void run() {
-        System.out.println("Thread started!!!!!!!!");
+        System.out.println("Thread started!!");
         executionThread.run();
     }
 
@@ -59,7 +59,6 @@ public class AlarmTimerTask extends TimerTask {
                 notifier.showNotification(header, "You can resume your work now :)", MessageType.INFO);
             } catch (InterruptedException ie) {
                 System.out.println("We've been interrupted.");
-                return;
             }
         });
     }
